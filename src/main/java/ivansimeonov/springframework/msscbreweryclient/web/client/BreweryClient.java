@@ -4,7 +4,6 @@ import ivansimeonov.springframework.msscbreweryclient.web.model.BeerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,11 +29,21 @@ public class BreweryClient {
 
     public BeerDto getBeerById(UUID uuid) {
         log.warn(apihost + BEER_PATH_V1 + uuid.toString());
-        return restTemplate.getForObject(apihost + BEER_PATH_V1 + uuid.toString(), BeerDto.class);
+        return restTemplate.getForObject(apihost + BEER_PATH_V1 + uuid, BeerDto.class);
     }
 
     public URI addBeer(BeerDto beerDto) {
         return restTemplate.postForLocation(apihost + BEER_PATH_V1, beerDto);
+    }
+
+    public void updateBeer(UUID uuid, BeerDto beerDto) {
+        log.warn(apihost + BEER_PATH_V1 + uuid);
+        restTemplate.put(apihost + BEER_PATH_V1 + uuid, beerDto);
+    }
+
+    public void deleteBeer(UUID uuid) {
+        log.warn(apihost + BEER_PATH_V1 + uuid);
+        restTemplate.delete(apihost + BEER_PATH_V1 + uuid);
     }
 
     public void setApihost(String apihost) {
